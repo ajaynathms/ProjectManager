@@ -10,9 +10,12 @@ import { AddProjectComponent } from './project/add-project/add-project.component
 import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTaskComponent } from './task/add-task/add-task.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {DataTableModule} from 'primeng/datatable';
-
+import {GrowlModule} from 'primeng/growl';
+import { Interceptor, fakeBackendProvider } from './interceptor/interceptor';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,14 +26,17 @@ import {DataTableModule} from 'primeng/datatable';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     IonRangeSliderModule,
     NgxMyDatePickerModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,DataTableModule
+    HttpClientModule,DataTableModule,GrowlModule,ConfirmDialogModule
   ],
-  providers: [],
+  providers: [
+     fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
