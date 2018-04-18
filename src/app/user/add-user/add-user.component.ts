@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddUserService } from './add-user.service';
 import { Users } from '../../entities/users';
 import { Message } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { NgForm } from '@angular/forms/src/directives/ng_form';
 
 @Component({
     templateUrl: './add-user.component.html',
@@ -11,6 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 })
 
 export class AddUserComponent implements OnInit {
+    @ViewChild('f') form;
     cd: any;
     msgs: Message[] = [];
     userList: Users[];
@@ -33,7 +35,8 @@ export class AddUserComponent implements OnInit {
     onReset() {
         this.saveButtonString = "Add";
 
-        this.currentUser = { user_ID: 0, employee_ID: "", first_Name: "", last_Name: "" };
+        this.currentUser = { User_ID: 0, Employee_ID: "", First_Name: "", Last_Name: "" };
+        this.form.reset();
     }
    
      onEditClick(user: Users) {
@@ -53,35 +56,38 @@ export class AddUserComponent implements OnInit {
 
         this.service.updateUsers(user)
             .subscribe(data => {
-                this.showMessage(data.status.status,data.status.message);
+              
+                this.showMessage(data.status.Result,data.status.Message);
                 
             });
 
     }
     showMessage(status: boolean, message: string) {
+        this.msgs=[];
         if (status === true) {
-            this.msgs.push({ severity: 'success', summary: "Success", detail: message });
+            this.msgs.push({ severity: 'success', summary: "Success", detail: message});
         }
         else {
             this.msgs.push({ severity: 'error', summary: "Error", detail: message });
 
         }
         this.getUsers();
+        this.onReset();
 
     }
     getUsers() {
         this.service.getUsers()
-            .subscribe(data => { debugger; this.userList = data; });
+            .subscribe(data => {  this.userList = data; });
     }
 
     confirmDelete(user: Users) {
 
         this.confirmationService.confirm({
-            message: 'Are you sure that you want to delete user : ' + user.employee_ID + '?',
+            message: 'Are you sure that you want to delete user : ' + user.Employee_ID + '?',
             accept: () => {
                 this.service.deleteUser(user)
                 .subscribe(data => {
-                    this.showMessage(data.status,data.message);
+                    this.showMessage(data.Result,data.Message);
                 });            }
         });
     }

@@ -34,9 +34,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpClientModule,DataTableModule,GrowlModule,ConfirmDialogModule
   ],
-  providers: [
-     fakeBackendProvider
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

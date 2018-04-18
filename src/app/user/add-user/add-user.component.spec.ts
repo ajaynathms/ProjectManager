@@ -58,25 +58,25 @@ describe('AddUserComponent', () => {
     
     it('On reset click first_name should be set empty', () => { 
       component.onReset();
-      expect(component.currentUser.first_Name) 
+      expect(component.currentUser.First_Name) 
           .toEqual(''); 
     });
 
     it('On edit click button text changes to edit', () => { 
-      component.onEditClick({user_ID:1,first_Name:'test',last_Name:'test',employee_ID:'test'});
+      component.onEditClick({User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'});
       expect(component.saveButtonString) 
           .toEqual('Edit'); 
     });
     it('On save should return a message', () => { 
-      component.currentUser={user_ID:1,first_Name:'test',last_Name:'test',employee_ID:'test'};
-      component.onSave({user_ID:1,first_Name:'test',last_Name:'test',employee_ID:'test'});
+      component.currentUser={User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'};
+      component.onSave({User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'});
      
       expect(component.msgs.length) 
           .toBeGreaterThanOrEqual(0); 
     });
     it('On delete should return a message', () => { 
-      component.currentUser={user_ID:1,first_Name:'test',last_Name:'test',employee_ID:'test'};
-      component.confirmDelete({user_ID:1,first_Name:'test',last_Name:'test',employee_ID:'test'});
+      component.currentUser={User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'};
+      component.confirmDelete({User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'});
       component._confirmationService.onAccept();
       expect(component.msgs.length) 
           .toBeGreaterThanOrEqual(0); 

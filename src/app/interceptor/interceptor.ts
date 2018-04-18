@@ -13,11 +13,11 @@ export class Interceptor implements HttpInterceptor {
     constructor() { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        debugger;
+      
         // array in local storage for registered users
         // wrap in delayed observable to simulate server api call
         return Observable.of(null).mergeMap(() => {
-            debugger;
+           
             if (request.url.endsWith('api/getAllUsers') && request.method === 'GET') {
                 return Observable.of(new HttpResponse({ status: 200, body: [
                     {"user_ID":13,"first_Name":"Ajaynath","last_Name":"MS","employee_ID":"357272"},

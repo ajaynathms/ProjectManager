@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 export interface Users {
-  user_ID: number;
-  first_Name,last_Name,employee_ID: string;
-  project_ID?: number;
+  User_ID: number;
+  First_Name,Last_Name,Employee_ID: string;
+  Project_ID?: number;
 }
