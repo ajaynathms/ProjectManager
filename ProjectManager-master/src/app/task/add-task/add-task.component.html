@@ -1,0 +1,142 @@
+<div class="container">
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Add Task</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="empId">Project:</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="project" placeholder="Select the Project" [disabled]="true">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="task">Task:</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="task" placeholder="Enter task name">
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-6">
+                        <div class="checkbox checkbox-padding">
+                            <label>
+                                <input type="checkbox" value="">Parent Task</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="lastName">Priority:</label>
+                        <div class="col-sm-8">
+                            <ion-range-slider #sliderElement type="single" [min]="0" max="30" grid="true" grid_num="3" prefix="Priority: " (onUpdate)="myOnUpdate($event)"
+                                (onChange)="myOnChange($event)" (onFinish)="myOnFinish($event)">
+                            </ion-range-slider>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="pTask">Parent Task:</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="pTask" placeholder="Select the Parent Task" [disabled]="true">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="startDate">Start Date:</label>
+                        <div class="col-md-8">
+                            <form [formGroup]="myForm" (ngSubmit)="onSubmit()" novalidate>
+                                <div class="input-group" [formGroup]="myForm">
+                                    <input class="form-control" style="float:none" placeholder="Select a date" ngx-mydatepicker name="myDate" formControlName="myDate"
+                                        [options]="myOptions" #dp="ngx-mydatepicker" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" (click)="dp.clearDate()">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <!-- <div class="btnGroup">
+                                                                <button class="button" type="submit" [disabled]="myForm.controls.myDate.errors">Submit</button>
+                                                                <p class="error" *ngIf="myForm.controls.myDate.errors">Date is required!</p>
+                                                            </div> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="endDate">End Date:</label>
+                        <div class="col-md-8">
+                            <form [formGroup]="myForm" (ngSubmit)="onSubmit()" novalidate>
+                                <div class="input-group" [formGroup]="myForm">
+                                    <input class="form-control" style="float:none" placeholder="Select a date" ngx-mydatepicker name="myDate" formControlName="myDate"
+                                        [options]="myOptions" #dp="ngx-mydatepicker" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" (click)="dp.clearDate()">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" (click)="dp.toggleCalendar()">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label col-sm-4" for="user">User:</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="user" placeholder="Select a user" [disabled]="true">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>              
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="form-group col-md-6">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <button type="button" class="btn btn-md btn-success">Update</button>
+                            <button type="button" class="btn btn-md btn-danger">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
