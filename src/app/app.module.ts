@@ -18,13 +18,15 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SliderModule} from 'primeng/slider';
 import {CalendarModule} from 'primeng/calendar';
+import { ViewTaskComponent } from './task/view-task/view-task.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddUserComponent,
     AddProjectComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    ViewTaskComponent
   ],
   imports: [
     BrowserModule,
