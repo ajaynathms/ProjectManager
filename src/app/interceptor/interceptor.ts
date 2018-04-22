@@ -19,21 +19,37 @@ export class Interceptor implements HttpInterceptor {
         return Observable.of(null).mergeMap(() => {
            
             if (request.url.endsWith('api/getAllUsers') && request.method === 'GET') {
-                return Observable.of(new HttpResponse({ status: 200, body: [
-                    {"user_ID":13,"first_Name":"Ajaynath","last_Name":"MS","employee_ID":"357272"},
-                    {"user_ID":14,"first_Name":"Sandeep","last_Name":"CN","employee_ID":"357271"},
-                    {"user_ID":14,"first_Name":"Manoj","last_Name":"Kumar","employee_ID":"357273"}
-                
-                ] }));
+                request = request.clone({url: 'assets/user-data.json',method:"GET"});
+          
             
             }
             if (request.url.endsWith('api/updateUser') && request.method === 'POST') {
 
                 request = request.clone({url: 'assets/user-added.json',method:"GET"});
             }
-            if (request.url.endsWith('api/deleteUser') && request.method === 'POST') {
+            if (request.url.endsWith('api/DeleteUser') && request.method === 'POST') {
 
                 request = request.clone({url: 'assets/user-deleted.json',method:"GET"});
+            }
+
+            if (request.url.endsWith('api/getAllProjects') && request.method === 'GET') {
+
+                request = request.clone({url: 'assets/project-list.json',method:"GET"});
+            }
+            if (request.url.endsWith('api/updateProject') && request.method === 'POST') {
+
+                request = request.clone({url: 'assets/project-added.json',method:"GET"});
+            }
+            if (request.url.endsWith('api/getAllTasks') && request.method === 'GET') {
+
+                request = request.clone({url: 'assets/task-list.json',method:"GET"});
+            }if (request.url.endsWith('api/getAllParentTasks') && request.method === 'GET') {
+
+                request = request.clone({url: 'assets/parent-task.json',method:"GET"});
+            }
+            if (request.url.endsWith('api/updateTask') && request.method === 'POST') {
+
+                request = request.clone({url: 'assets/task-updated.json',method:"GET"});
             }
             return next.handle(request);
 

@@ -1,12 +1,12 @@
 {
     "status": {
-        "status": true,
-        "message": "User added successfully"
+        "Result": true,
+        "Message": "User added successfully"
     },
     "user": {
-        "user_ID": 14,
-        "first_Name": "Sreejith",
-        "last_Name": " M",
-        "employee_ID": "345678"
+        "User_ID": 14,
+        "First_Name": "Sreejith",
+        "Last_Name": " M",
+        "Employee_ID": "345678"
     }
 }

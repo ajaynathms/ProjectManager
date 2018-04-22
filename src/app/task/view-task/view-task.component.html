@@ -1,3 +1,5 @@
+<p-growl [(value)]="msgs" [life]="3000" [sticky]="false"></p-growl>
+
 <div class="container">
     <div class="row">
         <div class="panel panel-default">
@@ -33,13 +35,18 @@
                             <p-column field="End_Date" header="End Date" sortable="true" [filter]="true" filterMatchMode="contains"> <ng-template let-col let-project="rowData" let-ri="rowIndex" pTemplate="body">
                                 <span>{{project[col.field]|date:'dd/MM/yyyy'}}</span>
                             </ng-template></p-column>
-                            <p-column field="Status" header="Status" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+                            <p-column field="Status" header="Status" sortable="true" [filter]="true" filterMatchMode="contains">
+                                    <ng-template let-col let-project="rowData" let-ri="rowIndex" pTemplate="body">
+                                            <span>{{project[col.field]==true?'Active':'Ended'}}</span>
+                                        </ng-template>
+                            </p-column>
                             
-                            <p-column>
-                                <ng-template let-task="rowData" pTemplate="body">
-                                    <div align="center">
-                                        <button type="button" class="btn btn-primary btn-sm" (click)="editTask(task)">Edit</button>
-                                        <button type="button" class="btn btn-danger btn-sm" (click)="endTask(task.taskId)">End Task</button>
+                            <p-column field="Status">
+                                <ng-template let-col let-project="rowData" pTemplate="body" >
+                                    
+                                    <div align="center" *ngIf="project[col.field]">
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="editTask(project)">Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm" (click)="endTask(project)">End Task</button>
                                     </div>
                                 </ng-template>
                             </p-column>
@@ -92,6 +99,9 @@
         </div>
     </div>
 </div>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"  ></p-confirmDialog>
+
 
 
 

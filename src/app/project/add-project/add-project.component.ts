@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Project } from '../../entities/project';
 import { Users } from '../../entities/users';
 import { AddProjectService } from './add-project.service';
@@ -16,7 +16,7 @@ export class AddProjectComponent implements OnInit {
     msgs: Message[] = [];
     projectsList: Project[];
     usersList: Users[];
-
+    startDate:Date;
     public addOrUpdateBtn: string = 'Add';
 
 
@@ -27,21 +27,25 @@ export class AddProjectComponent implements OnInit {
 
     ngOnInit() {
 
+        this.formInit();
+        this.getUsers();
+        this.getAllProject();
+
+    }
+    formInit()
+    {
         this.addProjectForm = this.formBuilder.group({
             projectId: [0, Validators.required],
             projectNameControl: [null, Validators.required],
             checkDatesControl: [null],
-            startDateControl: [null],
-            endDateControl: [null],
+            startDateControl: [this.datePipe.transform(Date.now(),'MM/dd/yyyy').toString()],
+            endDateControl: [this.datePipe.transform(Date.now()+86400000,'MM/dd/yyyy').toString()],
             status: ["Active"],
             priorityControl: [null, Validators.required],
             selectedManagerControl: [null, Validators.required],
             selectedManagerName: [null, Validators.required],
             priorityDisplayControl: [null]
         });
-        this.getUsers();
-        this.getAllProject();
-
     }
 
     getUsers() {
@@ -52,12 +56,12 @@ export class AddProjectComponent implements OnInit {
     getAllProject() {
         this.projectsList = [];
         this.service.getAllProject()
-            .subscribe(data => { debugger;this.projectsList = data; });
+            .subscribe(data => { this.projectsList = data; });
     }
 
 
     updateProject(project: Project) {
-      
+        this.addOrUpdateBtn = 'Update';
         this.addProjectForm = this.formBuilder.group({
             projectId: [project.Project_ID, Validators.required],
             projectNameControl: [project.ProjectName, Validators.required],
@@ -82,8 +86,7 @@ export class AddProjectComponent implements OnInit {
             this.msgs.push({ severity: 'error', summary: "Error", detail: message });
 
         }
-        this.getAllProject();
-        this.addProjectForm.reset();
+        this.addProjectReset();
 
     }
 
@@ -91,6 +94,7 @@ export class AddProjectComponent implements OnInit {
 
     addProjectReset() {
         this.addProjectForm.reset();
+        this.formInit();
         this.addOrUpdateBtn = 'Add';
     }
 

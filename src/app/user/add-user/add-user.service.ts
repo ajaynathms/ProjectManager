@@ -24,7 +24,9 @@ export class AddUserService {
     return this.http.post<UserEdit>(this.apiEndPOint+"/api/updateUser",user );
   }
   deleteUser(user:Users): Observable<Status> {
-    return this.http.post<Status>(this.apiEndPOint+"/api/DeleteUser ",user,{headers:new HttpHeaders().set('Content-Type', 'application/json') });
+  
+
+    return this.http.post<Status>(this.apiEndPOint+"/api/DeleteUser",user);
   }
 }
 

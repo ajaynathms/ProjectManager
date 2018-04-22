@@ -45,7 +45,6 @@ export class AddUserComponent implements OnInit {
         this.currentUser = Object.assign({}, this.currentUser, user);
     }
     onSave(user: Users) {
-        //  this.currentUser = user;
         
         this.updateUser(this.currentUser);
       
@@ -77,7 +76,7 @@ export class AddUserComponent implements OnInit {
     }
     getUsers() {
         this.service.getUsers()
-            .subscribe(data => {  this.userList = data; });
+            .subscribe(data => {   this.userList = data; });
     }
 
     confirmDelete(user: Users) {

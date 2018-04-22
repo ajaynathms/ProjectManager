@@ -3,23 +3,26 @@ import { AddTaskComponent } from '../add-task/add-task.component';
 import { Router } from '@angular/router';
 import { TaskModel } from '../../entities/task';
 import { Project } from '../../entities/project';
-import { DataService } from '../../entities/dataservice';
 import { ViewTaskService } from './view-task.service';
+import { TaskService } from '../../utilities/common-service';
+import { ConfirmationService, Message } from 'primeng/api';
 
 @Component({
     templateUrl: './view-task.component.html',
     styleUrls: ['./view-task.component.css'],
-    providers: [DataService, ViewTaskService]
+    providers: [ ViewTaskService,ConfirmationService]
 })
 
 export class ViewTaskComponent implements OnInit {
+    msgs: Message[] = [];
+
     tasksList: TaskModel[] = [];
 
     projectsList: Project[] = [];
     selectedProject: String;
     selectedProjectId: Number;
 
-    constructor(private router: Router, private dataService: DataService, private service: ViewTaskService) { }
+    constructor(private router: Router, private taskService:TaskService, private service: ViewTaskService,private confirmationService:ConfirmationService) { }
     ngOnInit() {
         this.getAllProject();
     }
@@ -35,7 +38,7 @@ export class ViewTaskComponent implements OnInit {
             .subscribe(data => { this.projectsList = data; });
     }
 
-    getAllTask(id: number) {
+    getAllTask(id: Number) {
         this.service.getAllTasks()
             .subscribe(data => {
                 this.tasksList = data.filter(
@@ -43,17 +46,32 @@ export class ViewTaskComponent implements OnInit {
             });
     }
     editTask(task: TaskModel) {
+        this.taskService.task=task;
         this.router.navigate(['/edittask']);
-        // this.dataService.changeMessage("Hello from Sibling");
-        let taskBlock = null;
+        
+    }
+    endTask(task: TaskModel) {
+  
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to end this task?',
+            accept: () => {
+                task.Status=false;
+                this.service.updateTask(task)
+                    .subscribe(data => { this.showMessage(data.status.Result, data.status.Message); });
+            }
+        });
+    }
 
-        let selectedTask = task;
-        taskBlock = task;
-        taskBlock.formMode = 'Edit Task';
-        taskBlock.btnMode = 'Update';
-        taskBlock.selectedProject = this.selectedProject;
-        taskBlock.selectedProjectId = this.selectedProjectId;
+    showMessage(status: boolean, message: string) {
+        this.msgs = [];
+        if (status === true) {
+            this.msgs.push({ severity: 'success', summary: "Success", detail: message });
+        }
+        else {
+            this.msgs.push({ severity: 'error', summary: "Error", detail: message });
 
-        this.dataService.sendTaskBlock(taskBlock);
+        }
+        this.getAllTask(this.selectedProjectId);
+
     }
 }

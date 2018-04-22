@@ -34,12 +34,12 @@
                         <div class="col-md-1"></div>
                     </div>
                     <div class="row" *ngIf="addProjectForm.controls.checkDatesControl.value">
-                        <div class="col-md-3"></div>
+                        <div class="col-md-3">{{startDate}}</div>
                         <div class="form-group col-md-6">
                             <label class="control-label col-sm-4" for="startDate">Start Date:</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                        <p-calendar  name="startDateControl" formControlName="startDateControl" [showIcon]="true"></p-calendar>
+                                        <p-calendar  name="startDateControl"   formControlName="startDateControl" [showIcon]="true"></p-calendar>
                                     
                                 </div>                   
                             </div>
@@ -51,12 +51,15 @@
                             <label class="control-label col-sm-4" for="endDate">End Date:</label>
                             <div class="col-md-8">                  
                                 <div class="input-group">
-                                        <p-calendar  name="endDateControl" formControlName="endDateControl"   [showIcon]="true"></p-calendar>
+                                        <p-calendar  name="endDateControl"  formControlName="endDateControl"   [showIcon]="true"></p-calendar>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                           
+                            
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3"></div>
@@ -75,7 +78,7 @@
                                         <h4 class="middleVert1">30</h4>
                                     </div>
                                     <div class="col-sm-3">
-                                        <input class="form-control" readonly formControlName="priorityDisplayControl" value="{{addProjectForm.controls.priorityControl.value}}">
+                                        <input class="form-control" readonly name="priorityDisplayControl" formControlName="priorityDisplayControl" value="{{addProjectForm.controls.priorityControl.value}}">
                                     </div>
                                 </div>
                             </div>
