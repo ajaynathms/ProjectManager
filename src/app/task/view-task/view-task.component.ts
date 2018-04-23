@@ -6,11 +6,12 @@ import { Project } from '../../entities/project';
 import { ViewTaskService } from './view-task.service';
 import { TaskService } from '../../utilities/common-service';
 import { ConfirmationService, Message } from 'primeng/api';
+import { DatePipe } from '@angular/common';
 
 @Component({
     templateUrl: './view-task.component.html',
     styleUrls: ['./view-task.component.css'],
-    providers: [ ViewTaskService,ConfirmationService]
+    providers: [ ViewTaskService,ConfirmationService, DatePipe]
 })
 
 export class ViewTaskComponent implements OnInit {
@@ -22,7 +23,7 @@ export class ViewTaskComponent implements OnInit {
     selectedProject: String;
     selectedProjectId: Number;
 
-    constructor(private router: Router, private taskService:TaskService, private service: ViewTaskService,private confirmationService:ConfirmationService) { }
+    constructor(private router: Router, private taskService:TaskService, private service: ViewTaskService,private confirmationService:ConfirmationService,private datePipe: DatePipe) { }
     ngOnInit() {
         this.getAllProject();
     }
@@ -40,13 +41,11 @@ export class ViewTaskComponent implements OnInit {
 
     getAllTask(id: Number) {
         this.service.getAllTasks()
-            .subscribe(data => {
-                this.tasksList = data.filter(
-                    task => task.Project_ID === id);
-            });
+            .subscribe(data => { this.tasksList = data.filter(task => task.Project_ID === id)});
     }
     editTask(task: TaskModel) {
         this.taskService.task=task;
+        console.log(task);
         this.router.navigate(['/edittask']);
         
     }

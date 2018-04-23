@@ -23,6 +23,7 @@ export class AddProjectComponent implements OnInit {
     private addProjectForm: FormGroup;
 
     constructor(private formBuilder: FormBuilder, private service: AddProjectService, private confirmationService: ConfirmationService,private datePipe: DatePipe) {
+        
     }
 
     ngOnInit() {
@@ -99,18 +100,19 @@ export class AddProjectComponent implements OnInit {
     }
 
     addProjectSubmit() {
-
         this.service.updateProject({
             Project_ID: this.addProjectForm.get('projectId').value,
-            End_Date: this.addProjectForm.get('endDateControl').value,
-            Start_Date: this.addProjectForm.get('startDateControl').value,
+            End_Date: this.datePipe.transform(this.addProjectForm.get('endDateControl').value,'MM/dd/yyyy').toString(),
+            Start_Date: this.datePipe.transform(this.addProjectForm.get('startDateControl').value,'MM/dd/yyyy').toString(),
             Manager_ID: this.addProjectForm.get('selectedManagerControl').value,
             Priority: this.addProjectForm.get('priorityControl').value,
             ProjectName: this.addProjectForm.get('projectNameControl').value,
             Status: this.addProjectForm.get('status').value
         })
-            .subscribe(data => { this.showMessage(data.status.Result, data.status.Message); });
-
+            .subscribe(data => {
+                this.getAllProject();
+                this.showMessage(data.status.Result, data.status.Message);           
+            });
     }
 
 

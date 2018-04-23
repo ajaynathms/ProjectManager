@@ -14,6 +14,7 @@ import { AddUserComponent } from '../../user/add-user/add-user.component';
 import { AddUserService } from '../../user/add-user/add-user.service';
 import { Message } from 'primeng/api';
 import { TaskService } from '../../utilities/common-service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -21,7 +22,7 @@ import { TaskService } from '../../utilities/common-service';
     templateUrl: './add-task.component.html',
     styleUrls: ['./add-task.component.css'],
     changeDetection: ChangeDetectionStrategy.Default,
-    providers: [ViewTaskService, AddUserService]
+    providers: [ViewTaskService, AddUserService, DatePipe]
 })
 
 export class AddTaskComponent implements OnInit {
@@ -48,7 +49,8 @@ export class AddTaskComponent implements OnInit {
         private router: Router,
         private taskService: TaskService,
         private service: ViewTaskService,
-        private userService: AddUserService
+        private userService: AddUserService,
+        private datePipe: DatePipe
     ) {
 
 
@@ -81,7 +83,6 @@ export class AddTaskComponent implements OnInit {
     handleChange(event)
         {
             console.log(this.addTaskForm.get('IsParentTaskControl').value);
-            debugger;
             if (this.addTaskForm.get('IsParentTaskControl').value==false)
             {
                 this.enableControls();
@@ -123,14 +124,17 @@ export class AddTaskComponent implements OnInit {
             TaskId: [task.Task_ID],
             ProjectIdControl: [task.Project_ID, Validators.required],
             TaskNameControl: [task.TaskName, Validators.required],
-            IsParentTaskControl: [task.Parent_ID === null ? true : false],
+            IsParentTaskControl: [task.User_ID === null ? true : false],
             PriorityControl: [task.Priority, Validators.required],
             PriorityDisplayControl: [task.Priority],
             ParentTaskControl: [task.Parent_ID],
-            StartDateControl: [task.End_Date, Validators.required],
-            EndDateControl: [task.Start_Date, Validators.required],
+            StartDateControl: [task.Start_Date !== null ? this.datePipe.transform(task.Start_Date,'MM/dd/yyyy').toString() : null, Validators.required],
+            EndDateControl: [task.End_Date !== null ? this.datePipe.transform(task.End_Date,'MM/dd/yyyy').toString() : null, Validators.required],
             UserIdControl: [task.User_ID]
         });
+        this.addTaskForm.get('EndDateControl').disable();
+        this.addTaskForm.get('StartDateControl').disable();
+        this.addTaskForm.get('PriorityControl').disable();
         this.selectedProject = task.Project_Name;
         this.selectedUser = task.User_Name;
         this.selectedPTaskId = task.Parent_ID;
@@ -151,7 +155,7 @@ export class AddTaskComponent implements OnInit {
     getAllParentTask() {
         this.projectsList = [];
         this.service.getAllParentTasks()
-            .subscribe(data => { debugger; this.parentTasksList = data; });
+            .subscribe(data => { this.parentTasksList = data; });
     }
 
     getAllUsers() {
@@ -196,9 +200,9 @@ export class AddTaskComponent implements OnInit {
 
         this.service.updateTask({
             Task_ID: this.addTaskForm.get('TaskId').value,
-            End_Date: this.addTaskForm.get('EndDateControl').value,
+            End_Date: this.addTaskForm.get('EndDateControl').value !== null ? this.datePipe.transform(this.addTaskForm.get('EndDateControl').value,'MM/dd/yyyy').toString() : null ,
             Project_ID: this.addTaskForm.get('ProjectIdControl').value,
-            Start_Date: this.addTaskForm.get('StartDateControl').value,
+            Start_Date: this.addTaskForm.get('StartDateControl').value !== null ? this.datePipe.transform(this.addTaskForm.get('StartDateControl').value,'MM/dd/yyyy').toString() : null ,
             Parent_ID: this.addTaskForm.get('ParentTaskControl').value,
             Priority: this.addTaskForm.get('PriorityControl').value,
             Status: true,

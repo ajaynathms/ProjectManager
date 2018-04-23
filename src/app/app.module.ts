@@ -38,11 +38,13 @@ import { TaskService } from './utilities/common-service';
     ReactiveFormsModule,
     HttpClientModule,DataTableModule,GrowlModule,ConfirmDialogModule,SliderModule,CalendarModule
   ],
-  providers:[ TaskService, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: Interceptor,
-    multi: true
-}]  ,
+  providers:[ TaskService
+//     , {
+//     provide: HTTP_INTERCEPTORS,
+//     useClass: Interceptor,
+//     multi: true
+// }
+]  ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

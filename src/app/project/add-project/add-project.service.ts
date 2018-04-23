@@ -28,7 +28,7 @@ export class AddProjectService {
   }
   updateProject(proj:Project): Observable<ProjectEdit> {
     
-
+    console.log(proj);
     return this.http.post<ProjectEdit>(environment.apiUrl+"/api/updateProject",proj );
   }
 }
