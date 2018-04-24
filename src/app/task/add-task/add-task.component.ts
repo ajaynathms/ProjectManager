@@ -118,6 +118,7 @@ export class AddTaskComponent implements OnInit {
             EndDateControl: [null, Validators.required],
             UserIdControl: [null]
         });
+        this.selectedTask='';
     }
     onFormEditInit(task: TaskModel) {
         this.addTaskForm = this.formBuilder.group({
@@ -132,9 +133,10 @@ export class AddTaskComponent implements OnInit {
             EndDateControl: [task.End_Date !== null ? this.datePipe.transform(task.End_Date,'MM/dd/yyyy').toString() : null, Validators.required],
             UserIdControl: [task.User_ID]
         });
-        this.addTaskForm.get('EndDateControl').disable();
-        this.addTaskForm.get('StartDateControl').disable();
-        this.addTaskForm.get('PriorityControl').disable();
+        if(task.User_ID === null )
+        {
+            this.disableControls();
+        }
         this.selectedProject = task.Project_Name;
         this.selectedUser = task.User_Name;
         this.selectedPTaskId = task.Parent_ID;
@@ -209,7 +211,7 @@ export class AddTaskComponent implements OnInit {
             TaskName: this.addTaskForm.get('TaskNameControl').value,
             User_ID: this.addTaskForm.get('UserIdControl').value
         })
-            .subscribe(data => { this.showMessage(data.status.Result, data.status.Message); this.clearDate(); });
+            .subscribe(data => { this.showMessage(data.status.Result, data.status.Message); this.clearDate();  this.formMode='Add Task'; this.onFormInit();this.enableControls();});
 
     }
 
