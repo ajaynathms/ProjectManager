@@ -22,7 +22,7 @@ export class ViewTaskComponent implements OnInit {
     projectsList: Project[] = [];
     selectedProject: String;
     selectedProjectId: Number;
-
+   
     constructor(private router: Router, private taskService:TaskService, private service: ViewTaskService,private confirmationService:ConfirmationService,private datePipe: DatePipe) { }
     ngOnInit() {
         this.getAllProject();
@@ -45,7 +45,6 @@ export class ViewTaskComponent implements OnInit {
     }
     editTask(task: TaskModel) {
         this.taskService.task=task;
-        console.log(task);
         this.router.navigate(['/edittask']);
         
     }

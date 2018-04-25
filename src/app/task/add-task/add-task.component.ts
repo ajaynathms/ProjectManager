@@ -42,7 +42,7 @@ export class AddTaskComponent implements OnInit {
     usersList: Users[] = [];
 
     private myForm: FormGroup;
-    private addTaskForm: FormGroup;
+    public addTaskForm: FormGroup;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -69,20 +69,11 @@ export class AddTaskComponent implements OnInit {
             this.enableControls();
         }
         
-        // this.addTaskForm.valueChanges.subscribe(() => {
-        //     if (this.addTaskForm.controls['IsParentTaskControl'].value === true) {
-        //         this.disableControls();
-        //     }
-        //     else {
-        //         this.enableControls();
-
-
-        //     }
-        // });
+        
     }
     handleChange(event)
         {
-            console.log(this.addTaskForm.get('IsParentTaskControl').value);
+           
             if (this.addTaskForm.get('IsParentTaskControl').value==false)
             {
                 this.enableControls();
@@ -129,8 +120,8 @@ export class AddTaskComponent implements OnInit {
             PriorityControl: [task.Priority, Validators.required],
             PriorityDisplayControl: [task.Priority],
             ParentTaskControl: [task.Parent_ID],
-            StartDateControl: [task.Start_Date !== null ? this.datePipe.transform(task.Start_Date,'MM/dd/yyyy').toString() : null, Validators.required],
-            EndDateControl: [task.End_Date !== null ? this.datePipe.transform(task.End_Date,'MM/dd/yyyy').toString() : null, Validators.required],
+            StartDateControl: [task.Start_Date != null ? this.datePipe.transform(task.Start_Date,'MM/dd/yyyy').toString() : null, Validators.required],
+            EndDateControl: [task.End_Date != null ? this.datePipe.transform(task.End_Date,'MM/dd/yyyy').toString() : null, Validators.required],
             UserIdControl: [task.User_ID]
         });
         if(task.User_ID === null )
@@ -202,9 +193,9 @@ export class AddTaskComponent implements OnInit {
 
         this.service.updateTask({
             Task_ID: this.addTaskForm.get('TaskId').value,
-            End_Date: this.addTaskForm.get('EndDateControl').value !== null ? this.datePipe.transform(this.addTaskForm.get('EndDateControl').value,'MM/dd/yyyy').toString() : null ,
+            End_Date: this.addTaskForm.get('EndDateControl').value != null ? this.datePipe.transform(this.addTaskForm.get('EndDateControl').value,'MM/dd/yyyy').toString() : null ,
             Project_ID: this.addTaskForm.get('ProjectIdControl').value,
-            Start_Date: this.addTaskForm.get('StartDateControl').value !== null ? this.datePipe.transform(this.addTaskForm.get('StartDateControl').value,'MM/dd/yyyy').toString() : null ,
+            Start_Date: this.addTaskForm.get('StartDateControl').value != null ? this.datePipe.transform(this.addTaskForm.get('StartDateControl').value,'MM/dd/yyyy').toString() : null ,
             Parent_ID: this.addTaskForm.get('ParentTaskControl').value,
             Priority: this.addTaskForm.get('PriorityControl').value,
             Status: true,

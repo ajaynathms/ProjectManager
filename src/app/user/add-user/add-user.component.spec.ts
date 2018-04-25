@@ -5,7 +5,7 @@ import { AddUserComponent } from './add-user.component';
 import { DataTableModule } from 'primeng/datatable';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GrowlModule } from 'primeng/growl';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DebugElement } from '@angular/core';
@@ -70,6 +70,12 @@ describe('AddUserComponent', () => {
     it('On save should return a message', () => { 
       component.currentUser={User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'};
       component.onSave({User_ID:1,First_Name:'test',Last_Name:'test',Employee_ID:'test'});
+     
+      expect(component.msgs.length) 
+          .toBeGreaterThanOrEqual(0); 
+    });
+    it('On error  should return a message', () => { 
+      component.showMessage(false,"Error occured!");
      
       expect(component.msgs.length) 
           .toBeGreaterThanOrEqual(0); 

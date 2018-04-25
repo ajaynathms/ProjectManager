@@ -20,7 +20,7 @@ export class AddProjectComponent implements OnInit {
     public addOrUpdateBtn: string = 'Add';
 
 
-    private addProjectForm: FormGroup;
+    public addProjectForm: FormGroup;
 
     constructor(private formBuilder: FormBuilder, private service: AddProjectService, private confirmationService: ConfirmationService,private datePipe: DatePipe) {
         
@@ -67,8 +67,8 @@ export class AddProjectComponent implements OnInit {
             projectId: [project.Project_ID, Validators.required],
             projectNameControl: [project.ProjectName, Validators.required],
             checkDatesControl: [project.End_Date === null && project.Start_Date === null ? false : true],
-            startDateControl: [this.datePipe.transform(project.Start_Date,'MM/dd/yyyy').toString()],
-            endDateControl:  [this.datePipe.transform(project.End_Date,'MM/dd/yyyy').toString()],
+            startDateControl: [project.Start_Date===null?null: this.datePipe.transform(project.Start_Date,'MM/dd/yyyy').toString()],
+            endDateControl:  [project.End_Date===null?null:this.datePipe.transform(project.End_Date,'MM/dd/yyyy').toString()],
             status: [project.Status],
             priorityControl: [project.Priority, Validators.required],
             selectedManagerControl: [project.Manager_ID, Validators.required],
