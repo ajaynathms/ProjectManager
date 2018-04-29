@@ -39,11 +39,11 @@ import { TaskService } from './utilities/common-service';
     HttpClientModule,DataTableModule,GrowlModule,ConfirmDialogModule,SliderModule,CalendarModule
   ],
   providers:[ TaskService
-//     , {
-//     provide: HTTP_INTERCEPTORS,
-//     useClass: Interceptor,
-//     multi: true
-// }
+    , {
+    provide: HTTP_INTERCEPTORS,
+    useClass: Interceptor,
+    multi: true
+}
 ]  ,
   bootstrap: [AppComponent]
 })

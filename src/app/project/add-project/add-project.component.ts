@@ -38,15 +38,18 @@ export class AddProjectComponent implements OnInit {
         this.addProjectForm = this.formBuilder.group({
             projectId: [0, Validators.required],
             projectNameControl: [null, Validators.required],
-            checkDatesControl: [null],
-            startDateControl: [this.datePipe.transform(Date.now(),'MM/dd/yyyy').toString()],
-            endDateControl: [this.datePipe.transform(Date.now()+86400000,'MM/dd/yyyy').toString()],
+            checkDatesControl: [false],
+            startDateControl: [this.datePipe.transform(Date.now(),'MM/dd/yyyy').toString(),Validators.required],
+            endDateControl: [this.datePipe.transform(Date.now()+86400000,'MM/dd/yyyy').toString(),Validators.required],
             status: ["Active"],
             priorityControl: [null, Validators.required],
             selectedManagerControl: [null, Validators.required],
             selectedManagerName: [null, Validators.required],
             priorityDisplayControl: [null]
-        });
+        },
+        {validator: this.endDateAfterOrEqualValidator});
+        this.handleChange(null);
+
     }
 
     getUsers() {
@@ -67,14 +70,15 @@ export class AddProjectComponent implements OnInit {
             projectId: [project.Project_ID, Validators.required],
             projectNameControl: [project.ProjectName, Validators.required],
             checkDatesControl: [project.End_Date === null && project.Start_Date === null ? false : true],
-            startDateControl: [project.Start_Date===null?null: this.datePipe.transform(project.Start_Date,'MM/dd/yyyy').toString()],
-            endDateControl:  [project.End_Date===null?null:this.datePipe.transform(project.End_Date,'MM/dd/yyyy').toString()],
+            startDateControl: [project.Start_Date===null?null: this.datePipe.transform(project.Start_Date,'MM/dd/yyyy').toString(),Validators.required],
+            endDateControl:  [project.End_Date===null?null:this.datePipe.transform(project.End_Date,'MM/dd/yyyy').toString(),Validators.required],
             status: [project.Status],
             priorityControl: [project.Priority, Validators.required],
             selectedManagerControl: [project.Manager_ID, Validators.required],
             selectedManagerName: [project.Manager_Name, Validators.required],
             priorityDisplayControl: [null]
-        });
+        }, {validator: this.endDateAfterOrEqualValidator});
+        this.handleChange(null);
 
     }
 
@@ -125,6 +129,30 @@ export class AddProjectComponent implements OnInit {
         });
     }
 
+    handleChange(event)
+        {
+           
+            if (this.addProjectForm.get('checkDatesControl').value==true)
+            {
+                this.enableControls();
+            } 
+            else{
+                this.disableControls();
+            }
+        }
+
+    disableControls() {
+       
+        this.addProjectForm.get('endDateControl').disable();
+        this.addProjectForm.get('startDateControl').disable();
+    }
+    enableControls()
+    {
+        this.addProjectForm.get('endDateControl').enable();
+        this.addProjectForm.get('startDateControl').enable();
+        
+    }
+
     suspendProject(project: Project) {
   
         this.confirmationService.confirm({
@@ -136,7 +164,18 @@ export class AddProjectComponent implements OnInit {
             }
         });
     }
-
+    endDateAfterOrEqualValidator(formGroup): any {
+        var startDateTimestamp, endDateTimestamp;
+        for(var controlName in formGroup.controls) {
+          if(controlName.indexOf("startDateControl") !== -1) {
+            startDateTimestamp = Date.parse(formGroup.controls[controlName].value);
+          }
+          if(controlName.indexOf("endDateControl") !== -1) {
+            endDateTimestamp = Date.parse(formGroup.controls[controlName].value);
+          }
+        }
+        return (endDateTimestamp < startDateTimestamp) ? { endDateLessThanStartDate: true } : null;
+      }
 
 
 

@@ -105,10 +105,10 @@ export class AddTaskComponent implements OnInit {
             PriorityControl: [null, Validators.required],
             PriorityDisplayControl: [null],
             ParentTaskControl: [null],
-            StartDateControl: [null, Validators.required],
-            EndDateControl: [null, Validators.required],
-            UserIdControl: [null]
-        });
+            StartDateControl: [this.datePipe.transform(Date.now(),'MM/dd/yyyy').toString(),Validators.required],
+            EndDateControl: [this.datePipe.transform(Date.now()+86400000,'MM/dd/yyyy').toString(),Validators.required],
+              UserIdControl: [null]
+        } ,{validator: this.endDateAfterOrEqualValidator});
         this.selectedTask='';
     }
     onFormEditInit(task: TaskModel) {
@@ -123,7 +123,7 @@ export class AddTaskComponent implements OnInit {
             StartDateControl: [task.Start_Date != null ? this.datePipe.transform(task.Start_Date,'MM/dd/yyyy').toString() : null, Validators.required],
             EndDateControl: [task.End_Date != null ? this.datePipe.transform(task.End_Date,'MM/dd/yyyy').toString() : null, Validators.required],
             UserIdControl: [task.User_ID]
-        });
+        },{validator: this.endDateAfterOrEqualValidator});
         if(task.User_ID === null )
         {
             this.disableControls();
@@ -224,6 +224,18 @@ export class AddTaskComponent implements OnInit {
         this.getAllProject();
 
     }
+    endDateAfterOrEqualValidator(formGroup): any {
+        var startDateTimestamp, endDateTimestamp;
+        for(var controlName in formGroup.controls) {
+          if(controlName.indexOf("StartDateControl") !== -1) {
+            startDateTimestamp = Date.parse(formGroup.controls[controlName].value);
+          }
+          if(controlName.indexOf("EndDateControl") !== -1) {
+            endDateTimestamp = Date.parse(formGroup.controls[controlName].value);
+          }
+        }
+        return (endDateTimestamp < startDateTimestamp) ? { endDateLessThanStartDate: true } : null;
+      }
 
 
 }

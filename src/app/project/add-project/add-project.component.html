@@ -27,7 +27,7 @@
                         <div class="col-md-6">
                             <div class="checkbox checkbox-padding">
                                 <label>
-                                    <input type="checkbox" value="" name="checkDatesControl" formControlName="checkDatesControl">Set Start and End Date
+                                    <input type="checkbox" value="" name="checkDatesControl"  (change)="handleChange($event)" formControlName="checkDatesControl">Set Start and End Date
                                 </label>
                             </div>
                         </div>
@@ -39,9 +39,17 @@
                             <label class="control-label col-sm-4" for="startDate">Start Date:</label>
                             <div class="col-md-8">
                                 <div class="input-group">
-                                        <p-calendar  name="startDateControl"   formControlName="startDateControl" [showIcon]="true"></p-calendar>
-                                    
-                                </div>                   
+                                    <p-calendar name="startDateControl" formControlName="startDateControl" [showIcon]="true"></p-calendar>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+
+
+                            <div *ngIf="(addProjectForm.controls.startDateControl.touched && !addProjectForm.controls.startDateControl.valid)">
+                                <span class="glyphicon glyphicon-info-sign text-danger" aria-hidden="true" style="display:inline;"></span>
+                                <p class="text-danger" style="display:inline;">This is a required field</p>
                             </div>
                         </div>
                     </div>
@@ -49,16 +57,23 @@
                         <div class="col-md-3"></div>
                         <div class="form-group col-md-6">
                             <label class="control-label col-sm-4" for="endDate">End Date:</label>
-                            <div class="col-md-8">                  
+                            <div class="col-md-8">
                                 <div class="input-group">
-                                        <p-calendar  name="endDateControl"  formControlName="endDateControl"   [showIcon]="true"></p-calendar>
+                                    <p-calendar name="endDateControl" formControlName="endDateControl" [showIcon]="true"></p-calendar>
 
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                           
-                            
+
+                            <div *ngIf="addProjectForm?.errors?.endDateLessThanStartDate">
+                                <span class="glyphicon glyphicon-info-sign text-danger" aria-hidden="true" style="display:inline;"></span>
+                                <p class="text-danger" style="display:inline;">End date cannot be lower than start date.</p>
+                            </div>
+                            <div *ngIf="(addProjectForm.controls.endDateControl.touched && !addProjectForm.controls.endDateControl.valid)">
+                                <span class="glyphicon glyphicon-info-sign text-danger" aria-hidden="true" style="display:inline;"></span>
+                                <p class="text-danger" style="display:inline;">This is a required field</p>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -84,32 +99,31 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                                <div *ngIf="(addProjectForm.controls.priorityControl.touched && !addProjectForm.controls.priorityControl.valid)">
-                                    <span class="glyphicon glyphicon-info-sign text-danger" aria-hidden="true" style="display:inline;"></span>
-                                    <p class="text-danger" style="display:inline;">This is a required field</p>
-                                </div>
-                            </div>                        
+                            <div *ngIf="(addProjectForm.controls.priorityControl.touched && !addProjectForm.controls.priorityControl.valid)">
+                                <span class="glyphicon glyphicon-info-sign text-danger" aria-hidden="true" style="display:inline;"></span>
+                                <p class="text-danger" style="display:inline;">This is a required field</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3"></div>
                         <div class="form-group col-md-6">
-                            <label class="control-label col-sm-4" >Manager:</label>
+                            <label class="control-label col-sm-4">Manager:</label>
                             <div class="col-sm-6">
-                                <input class="form-control" placeholder="Select the Manager" readonly  name="selectedManager" formControlName="selectedManagerName">
+                                <input class="form-control" placeholder="Select the Manager" readonly name="selectedManager" formControlName="selectedManagerName">
                             </div>
                             <div class="col-sm-2">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchManagersModal">Search</button>
                             </div>
                         </div>
-                        <div class="col-md-3"></div> 
+                        <div class="col-md-3"></div>
                     </div>
                     <div class="row">
                         <div class="col-md-3"></div>
                         <div class="form-group col-md-6">
                             <div class="col-md-4"></div>
                             <div class="col-md-8">
-                                <button type="submit" class="btn btn-md" [disabled]="addProjectForm.invalid"
-                                [ngClass]="{
+                                <button type="submit" class="btn btn-primary btn-md" [disabled]="addProjectForm.invalid" [ngClass]="{
                                     'btn-primary': addOrUpdateBtn == 'Add',
                                     'btn-success': addOrUpdateBtn == 'Update'
                                 }">{{addOrUpdateBtn}}</button>
@@ -118,7 +132,7 @@
                         </div>
                         <div class="col-md-3"></div>
                     </div>
-                </form>                              
+                </form>
             </div>
         </div>
 
@@ -146,7 +160,7 @@
                                 </ng-template>
                             </p-column>
                             <p-column field="Priority" header="Priority" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                            <p-column field="Manager_Name" header="Manager Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>                            
+                            <p-column field="Manager_Name" header="Manager Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
                             <p-column>
                                 <ng-template let-project="rowData" pTemplate="body">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="updateProject(project)">Update</button>
@@ -161,42 +175,42 @@
     </div>
 </div>
 
-    <!-- Modal - Search Managers -->
-    <div id="searchManagersModal" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Search Managers</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
-                            <p-dataTable [value]="usersList">
-                                <p-column field="User_ID" header="User ID" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                                <p-column field="First_Name" header="First Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                                <p-column field="Last_Name" header="Last Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                                <p-column field="Employee_ID" header="Employee ID" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                                <p-column>
-                                    <ng-template let-user="rowData" pTemplate="body">
-                                        <button type="button" class="btn btn-success btn-sm" id="assignManager" (click)="assignManager(user.User_ID, user.First_Name + ' ' + user.Last_Name)"
-                                            data-dismiss="modal">Assign</button>
-                                    </ng-template>
-                                </p-column>
-                            </p-dataTable>
-                        </div>
-                        <div class="col-md-1"></div>
+<!-- Modal - Search Managers -->
+<div id="searchManagersModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search Managers</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <p-dataTable [value]="usersList">
+                            <p-column field="User_ID" header="User ID" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+                            <p-column field="First_Name" header="First Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+                            <p-column field="Last_Name" header="Last Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+                            <p-column field="Employee_ID" header="Employee ID" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+                            <p-column>
+                                <ng-template let-user="rowData" pTemplate="body">
+                                    <button type="button" class="btn btn-success btn-sm" id="assignManager" (click)="assignManager(user.User_ID, user.First_Name + ' ' + user.Last_Name)"
+                                        data-dismiss="modal">Assign</button>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
                     </div>
-                    <br>
+                    <div class="col-md-1"></div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+                <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
-    
-    <p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd ></p-confirmDialog>
+
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" #cd></p-confirmDialog>
